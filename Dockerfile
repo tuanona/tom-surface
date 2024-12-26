@@ -1,16 +1,14 @@
-# tom-server/frontend/Dockerfile
-FROM node:20-alpine as builder
-
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci
-
-COPY . .
-RUN npm run build
-
 FROM nginx:alpine
-COPY --from=builder /app/dist /usr/share/nginx/html
+
+# Copy nginx configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
+# Copy static files
+COPY dist/ /usr/share/nginx/html/
+
+# Ensure correct permissions
+RUN chown -R nginx:nginx /usr/share/nginx/html && \
+    chmod -R 755 /usr/share/nginx/html
+
+# Expose port
 EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]

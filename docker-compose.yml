@@ -1,0 +1,9 @@
+services:
+  web:
+    build: .
+    ports:
+      - "8050:80"
+    container_name: app
+    volumes:
+      - ./dist:/usr/share/nginx/html
+    restart: unless-stopped
