@@ -1,9 +1,15 @@
+# docker-compose.yml
 services:
-  web:
-    build: .
+  core:
+    image: tuanona/tom-core:latest
     ports:
-      - "8050:80"
-    container_name: app
-    volumes:
-      - ./dist:/usr/share/nginx/html
-    restart: unless-stopped
+      - "8080:8080"  # Expose ke internet
+    environment:
+      - ALLOW_ORIGINS=* # Atau whitelist domain
+
+  surface-runner:
+    image: tuanona/tom-surface:latest
+    ports:
+      - "80:80"
+    environment:
+      - CORE_API=http://core:8080
