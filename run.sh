@@ -13,7 +13,7 @@ BOLD='\033[1m'
 show_progress() {
     local title=$1
     echo -e "\n${BOLD}$title${NC}"
-    for i in {1..3}; do
+    for i in {1..5}; do
         echo -n "▇"
         sleep 0.2
     done
