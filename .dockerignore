@@ -1,6 +1,0 @@
-node_module
-dist
-.idx
-.env.example
-.gitignore
-run.sh
