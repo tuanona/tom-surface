@@ -1,15 +1,20 @@
-# docker-compose.yml
 services:
   core:
-    image: tuanona/tom-core:latest
+    image: tuanona/tom-core:0.0.4
     ports:
-      - "8080:8080"  # Expose ke internet
-    environment:
-      - ALLOW_ORIGINS=* # Atau whitelist domain
+      - "8085:2000"
+    networks:
+      - benang
 
-  surface-runner:
-    image: tuanona/tom-surface:latest
+  surface:
+    image: tuanona/tom-surface:0.0.4
     ports:
-      - "80:80"
-    environment:
-      - CORE_API=http://core:8080
+      - "8082:1000"
+    depends_on:
+      - core
+    networks:
+      - benang
+
+networks:
+  benang:
+    driver: bridge

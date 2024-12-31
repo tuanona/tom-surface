@@ -21,6 +21,9 @@ RUN yarn build
 # Runtime stage
 FROM nginx:alpine
 
+# Install curl for healthcheck
+RUN apk add --no-cache curl
+
 # Copy nginx configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
@@ -31,9 +34,9 @@ COPY --from=builder /usr/src/app/dist /usr/share/nginx/html
 RUN chown -R nginx:nginx /usr/share/nginx/html && \
     chmod -R 755 /usr/share/nginx/html
 
-EXPOSE 80
+EXPOSE 1000
 
 HEALTHCHECK --interval=30s --timeout=5s --retries=3 \
-    CMD curl -f http://localhost/ || exit 1
+    CMD curl -f http://localhost:1000/health || exit 1
 
 CMD ["nginx", "-g", "daemon off;"]
